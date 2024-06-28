@@ -1,0 +1,143 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    cni.projectcalico.org/containerID: cf3f298336efa35a2fa3b47d457c0d58bec8fee7c4e6d57c54196567b38df268
+    cni.projectcalico.org/podIP: 192.168.104.13/32
+    cni.projectcalico.org/podIPs: 192.168.104.13/32
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"v1","kind":"Pod","metadata":{"annotations":{},"name":"pod2","namespace":"question4"},"spec":{"containers":[{"command":["sh","-c","while true; do date \u003e\u003e /vol/date.log; sleep 5; done"],"image":"busybox:1.31.1","name":"c1","volumeMounts":[{"mountPath":"/vol","name":"vol"}]},{"command":["tail","-f","/vol/date.log"],"image":"busybox:1.31.1","name":"c2","volumeMounts":[{"mountPath":"/vol","name":"vol"}]}],"volumes":[{"emptyDir":{},"name":"vol"}]}}
+  creationTimestamp: "2024-06-28T11:43:08Z"
+  name: pod2
+  namespace: question4
+  resourceVersion: "12107"
+  uid: 170701d0-3ae6-44d5-927d-d04c43621e1f
+spec:
+  containers:
+  - command:
+    - sh
+    - -c
+    - while true; do date >> /vol/date.log; sleep 5; done
+    image: busybox:1.31.1
+    imagePullPolicy: IfNotPresent
+    name: c1
+    resources: {}
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    volumeMounts:
+    - mountPath: /vol
+      name: vol
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: kube-api-access-gntvf
+      readOnly: true
+  - command:
+    - tail
+    - -f
+    - /vol/date.log
+    image: busybox:1.31.1
+    imagePullPolicy: IfNotPresent
+    name: c2
+    resources: {}
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    volumeMounts:
+    - mountPath: /vol
+      name: vol
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: kube-api-access-gntvf
+      readOnly: true
+  dnsPolicy: ClusterFirst
+  enableServiceLinks: true
+  nodeName: node2
+  preemptionPolicy: PreemptLowerPriority
+  priority: 0
+  restartPolicy: Always
+  schedulerName: default-scheduler
+  securityContext: {}
+  serviceAccount: default
+  serviceAccountName: default
+  terminationGracePeriodSeconds: 30
+  tolerations:
+  - effect: NoExecute
+    key: node.kubernetes.io/not-ready
+    operator: Exists
+    tolerationSeconds: 300
+  - effect: NoExecute
+    key: node.kubernetes.io/unreachable
+    operator: Exists
+    tolerationSeconds: 300
+  volumes:
+  - emptyDir: {}
+    name: vol
+  - name: kube-api-access-gntvf
+    projected:
+      defaultMode: 420
+      sources:
+      - serviceAccountToken:
+          expirationSeconds: 3607
+          path: token
+      - configMap:
+          items:
+          - key: ca.crt
+            path: ca.crt
+          name: kube-root-ca.crt
+      - downwardAPI:
+          items:
+          - fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.namespace
+            path: namespace
+status:
+  conditions:
+  - lastProbeTime: null
+    lastTransitionTime: "2024-06-28T11:43:14Z"
+    status: "True"
+    type: PodReadyToStartContainers
+  - lastProbeTime: null
+    lastTransitionTime: "2024-06-28T11:43:08Z"
+    status: "True"
+    type: Initialized
+  - lastProbeTime: null
+    lastTransitionTime: "2024-06-28T11:43:14Z"
+    status: "True"
+    type: Ready
+  - lastProbeTime: null
+    lastTransitionTime: "2024-06-28T11:43:14Z"
+    status: "True"
+    type: ContainersReady
+  - lastProbeTime: null
+    lastTransitionTime: "2024-06-28T11:43:08Z"
+    status: "True"
+    type: PodScheduled
+  containerStatuses:
+  - containerID: containerd://c34a4f3c80eda0aea4df8d50f1d3fe7adf7b1d9c52f75b7a44aad17159adf3dc
+    image: docker.io/library/busybox:1.31.1
+    imageID: docker.io/library/busybox@sha256:95cf004f559831017cdf4628aaf1bb30133677be8702a8c5f2994629f637a209
+    lastState: {}
+    name: c1
+    ready: true
+    restartCount: 0
+    started: true
+    state:
+      running:
+        startedAt: "2024-06-28T11:43:14Z"
+  - containerID: containerd://8341c511e04a0ff5344f8e274bf9ab4cdcbab06617c714e6575d1688b80d7833
+    image: docker.io/library/busybox:1.31.1
+    imageID: docker.io/library/busybox@sha256:95cf004f559831017cdf4628aaf1bb30133677be8702a8c5f2994629f637a209
+    lastState: {}
+    name: c2
+    ready: true
+    restartCount: 0
+    started: true
+    state:
+      running:
+        startedAt: "2024-06-28T11:43:14Z"
+  hostIP: 10.148.0.7
+  hostIPs:
+  - ip: 10.148.0.7
+  phase: Running
+  podIP: 192.168.104.13
+  podIPs:
+  - ip: 192.168.104.13
+  qosClass: BestEffort
+  startTime: "2024-06-28T11:43:08Z"
